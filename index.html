@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+    <style>
+        /* #fb-btn, #logout{
+        display: none;
+        } */
+    </style>
+</head>
+<body>
+    <h1>api test</h1>
+    <fb:login-button 
+    id="fb-btn"
+    scope="public_profile,email"
+    onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <a id="logout" onclick="logout()" href="#">Logout</a>
+<script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '207734423384450',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v2.10'
+      });
+        
+    //   FB.AppEvents.logPageView(); 
+    
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+    });  
+        
+    };
+  
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+
+
+    function statusChangeCallback(response) {
+       if (response.status === "connected") {
+           console.log("Logged in and authenticated");
+           setElements(true);
+       } else {
+           console.log("Not authenticated");
+           setElements(false);
+       }
+    }
+
+    function checkLoginState() {
+       FB.getLoginStatus(function(response) {
+           statusChangeCallback(response);
+       });
+   }
+
+
+    function setElements(isLoggedIn){
+        if(isLoggedIn){
+            document.getElementById('fb-btn').style.display = 'none';
+            document.getElementById('logout').style.display = 'block';
+        } else {
+            document.getElementById('fb-btn').style.display = 'block';
+            document.getElementById('logout').style.display = 'none';
+        }
+    }
+
+
+    function logout(){
+        FB.logout(function(response){
+            setElements(false);
+        })
+    }
+</script>
+
+</body>
+</html>
