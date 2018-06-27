@@ -81,6 +81,7 @@
         } else {
             document.getElementById('fb-btn').style.display = 'block';
             document.getElementById('logout').style.display = 'none';
+            document.getElementById("welcome").textContent = "";
         }
     }
 
@@ -96,6 +97,7 @@
        if(response && !response.error){
          console.log(response);
          document.getElementById("welcome").innerHTML = "Welcome " + response.name + " your email is: " + response.email;
+         setTimeout(function(){ document.getElementById("welcome").textContent = ""; }, 3000);
        }
      })
    }
