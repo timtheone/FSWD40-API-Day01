@@ -1,105 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+      
+      <style>
+                /* Always set the map height explicitly to define the size of the div
+                 * element that contains the map. */
+                #map {
+                  height: 50%;
+                  margin-top: 400px;
+
+                }
+                /* Optional: Makes the sample page fill the window. */
+                html, body {
+                  height: 100%;
+                  margin: 0;
+                  padding: 0;
+                }
+              </style>
+
+
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <fb:login-button 
-            id="fb-btn"
-            scope="public_profile,email"
-            onlogin="checkLoginState();">
-        </fb:login-button>
-        <a class="nav-link" href="#" id="logout" onclick="logout()">Log out</a>
-        </li>
-        </ul>
-    </div>
-</nav>
-    <h1>api test</h1>
-    <p id="welcome"></p>
-<script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '207734423384450',
-        cookie     : true,
-        xfbml      : true,
-        version    : 'v2.10'
-      });
-        
-    
-    FB.getLoginStatus(function(response) {
-        statusChangeCallback(response);
-    });  
-        
-    };
-  
-    (function(d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "https://connect.facebook.net/en_US/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-     }(document, 'script', 'facebook-jssdk'));
+    <form>
+        <input id="lat" type="text"><label>Lat</label><br>
+        <input id="lng" type="text"><label>Lng</label>
+        <button onclick="showMap()" type="button">Show Map</button>
+    </form>
 
 
-    function statusChangeCallback(response) {
-       if (response.status === "connected") {
-           console.log("Logged in and authenticated");
-           setElements(true);
-           graphAPI();
-       } else {
-           console.log("Not authenticated");
-           setElements(false);
-       }
-    }
+    <div id="map"></div>
 
-    function checkLoginState() {
-       FB.getLoginStatus(function(response) {
-           statusChangeCallback(response);
-       });
-   }
+    <script>
+        var map, infoWindow;
+        function showMap(){
+           console.log("test")
+            var latInput = Number(document.getElementById("lat").value);
+            var lngInput = Number(document.getElementById("lng").value);
+            console.log(latInput)
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                
+                
+                center: {
+                    lat: latInput,
+                    lng: lngInput
+                },
 
 
-    function setElements(isLoggedIn){
-        if(isLoggedIn){
-            document.getElementById('fb-btn').style.display = 'none';
-            document.getElementById('logout').style.display = 'block';
-        } else {
-            document.getElementById('fb-btn').style.display = 'block';
-            document.getElementById('logout').style.display = 'none';
+                zoom: 8
+            });
+
+
         }
-    }
+
+ function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 6
+        });
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
+
+        // function initMap() {
+        //     map = new google.maps.Map(document.getElementById('map'), {
+                
+                
+        //         center: {
+        //             lat: -35.397,
+        //             lng: 155.644
+        //         },
 
 
-    function logout(){
-        FB.logout(function(response){
-            setElements(false);
-        })
-    }
+        //         zoom: 8
+        //     });
+        // }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjW3DcJVRuL8P-_5zSiwj3FuM_ScVG3ZA&callback=initMap">
+    </script>
 
-    function graphAPI(){
-     FB.api("me?fields=id,name,email" , function(response){
-       if(response && !response.error){
-         console.log(response);
-         document.getElementById("welcome").innerHTML = "Welcome " + response.name + " your email is: " + response.email;
-       }
-     })
-   }
-</script>
 
 </body>
+
 </html>
